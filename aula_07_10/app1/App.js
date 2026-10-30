@@ -1,84 +1,64 @@
-import { 
-  Text, 
-  View, 
-  ScrollView, 
-  TextInput, 
-  Button,
-  Image
-} from 'react-native';
 
-import styles from './app.css';
+import React, { useState } from 'react';
+import { View, Text, Pressable } from 'react-native';
+
+import Inicio from './screens/Inicio';
+import Personagens from './screens/Personagens';
+import Musicas from './screens/Musicas';
+import Sobre from './screens/Sobre';
+
+import styles from './appStyles';
 
 export default function App() {
+  const [tela, setTela] = useState('Inicio');
+
+  const paginas = {
+    Inicio: <Inicio />,
+    Personagens: <Personagens />,
+    Musicas: <Musicas />,
+    Sobre: <Sobre />
+  };
+
+  const navegacao = [
+    { nome: 'Inicio', icone: '⌂' },
+    { nome: 'Personagens', icone: '♙' },
+    { nome: 'Musicas', icone: '♫' },
+    { nome: 'Sobre', icone: 'ⓘ' }
+  ];
+
   return (
-    <ScrollView style={styles.container}>
-
-      <View style={styles.header}>
-        <Text style={styles.titulo}>LA LA LAND</Text>
-        <Text style={styles.subtitulo}>
-          Uma história de sonhos, música e amor
-        </Text>
+    <View style={styles.app}>
+      <View style={styles.conteudo}>
+        {paginas[tela]}
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.tituloSecao}>Sobre o filme</Text>
+      <View style={styles.menu}>
+        {navegacao.map((item) => (
+          <Pressable
+            key={item.nome}
+            style={styles.menuItem}
+            onPress={() => setTela(item.nome)}
+          >
+            <Text
+              style={[
+                styles.menuIcone,
+                tela === item.nome && styles.menuAtivo
+              ]}
+            >
+              {item.icone}
+            </Text>
 
-        <Text style={styles.texto}>
-          La La Land conta a história de Mia e Sebastian,
-          dois jovens que possuem grandes sonhos.
-        </Text>
-
-        <Text style={styles.texto}>
-          Mia quer ser atriz e Sebastian quer ser músico.
-          Juntos, eles enfrentam desafios enquanto tentam
-          realizar seus sonhos.
-        </Text>
-        <Text style={styles.texto}>
-         Ao chegar em Los Angeles o pianista de jazz Sebastian (Ryan Gosling) conhece a atriz iniciante Mia (Emma Stone) e os dois se apaixonam perdidamente. Em busca de oportunidades para suas carreiras na competitiva cidade, os jovens tentam fazer o relacionamento amoroso dar certo enquanto perseguem fama e sucesso.
-         </Text>
+            <Text
+              style={[
+                styles.menuTexto,
+                tela === item.nome && styles.menuAtivo
+              ]}
+            >
+              {item.nome}
+            </Text>
+          </Pressable>
+        ))}
       </View>
-
-      <View style={styles.card}>
-        <Text style={styles.tituloSecao}>Personagens</Text>
-
-        <Text style={styles.nome}>Mia</Text>
-        <Text style={styles.texto}>
-          Uma jovem que sonha em ser atriz.
-        </Text>
-
-        <Text style={styles.nome_seb}>Sebastian</Text>
-        <Text style={styles.texto}>
-          Um músico apaixonado por jazz.
-        </Text>
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.tituloSecao}>Seu sonho</Text>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Escreva aqui..."
-        />
-
-        <Button
-          title="Enviar"
-          color="#6C4AB6"
-          onPress={() => ('')}
-        />
-      </View>
-
-        <Image 
-        source={require('./lalaland.jpg')} 
-        style={styles.imagem}
-        />
-
-      <Text style={styles.footer}>
-        ★ LA LA LAND ★
-      </Text>
-
-    </ScrollView>
+    </View>
   );
 }
-
-
-
